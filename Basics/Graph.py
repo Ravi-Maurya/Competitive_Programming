@@ -2,44 +2,44 @@ from collections import deque,defaultdict
 import heapq
 class Graph:
 	def __init__(self,V):
-		super(Graph, self).__init__();
-		self.graph = defaultdict(set);
-		self.V = V;
+		super(Graph, self).__init__()
+		self.graph = defaultdict(set)
+		self.V = V
 
 	def add_edge(self,u,v,weight=1,directed = True):
-		self.graph[u].add((v,weight));
+		self.graph[u].add((v,weight))
 		if not directed:
-			self.graph[v].add((u,weight));
+			self.graph[v].add((u,weight))
 
 	def bfs(self,start):
-		visited = [False for _ in range(self.V)];
-		queue = deque();
-		queue.append(start);
-		visited[start] = True;
+		visited = [False for _ in range(self.V)]
+		queue = deque()
+		queue.append(start)
+		visited[start] = True
 		res = []
 		while len(queue):
-			node = queue.popleft();
-			res.append(node);
-			for v,wt in self.graph[node]:
+			node = queue.popleft()
+			res.append(node)
+			for v,_ in self.graph[node]:
 				if not visited[v]:
-					queue.append(v);
-					visited[v] = True;
-		return res;
+					queue.append(v)
+					visited[v] = True
+		return res
 
 	def dfs(self,start):
-		visited = [False for _ in range(self.V)];
-		stack = deque();
-		stack.append(start);
+		visited = [False for _ in range(self.V)]
+		stack = deque()
+		stack.append(start)
 		res = []
 		while len(stack):
-			node = stack.pop();
+			node = stack.pop()
 			if not visited[node]:
-				res.append(node);
-				visited[node] = True;
-				for v,wt in self.graph[node]:
+				res.append(node)
+				visited[node] = True
+				for v,_ in self.graph[node]:
 					if not visited[v]:
-						stack.append(v);
-		return res;
+						stack.append(v)
+		return res
 
 	def dijkstra(self,start):
 		distance = [float('inf') for _ in range(self.V)]
@@ -80,14 +80,14 @@ class FloyddWarshal:
 		
 
 if __name__ == '__main__':
-	g = Graph(4);
+	g = Graph(4)
 	g.add_edge(0, 1, weight=1)
 	g.add_edge(1, 2, weight=2)
 	g.add_edge(2, 3, weight=4) 
 	g.add_edge(0, 3, weight=3) 
-	print("DFS -> " + str(g.dfs(0)));
-	print("BFS -> " + str(g.bfs(0)));
-	print("Dijkstra -> " + str(g.dijkstra(0)));
+	print("DFS -> " + str(g.dfs(0)))
+	print("BFS -> " + str(g.bfs(0)))
+	print("Dijkstra -> " + str(g.dijkstra(0)))
 
 	g = FloyddWarshal(7)
 	g.add_edge(0, 1)
