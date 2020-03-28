@@ -2,7 +2,6 @@ from collections import deque,defaultdict
 import heapq
 class Graph:
 	def __init__(self,V):
-		super(Graph, self).__init__()
 		self.graph = defaultdict(set)
 		self.V = V
 
@@ -60,7 +59,6 @@ class Graph:
 
 class FloyddWarshal:
 	def __init__(self, V):
-		super(FloyddWarshal, self).__init__()
 		self.V = V
 		self.graph = [[float('inf') for _ in range(self.V)] for _ in range(self.V)]
 		for i in range(self.V):
