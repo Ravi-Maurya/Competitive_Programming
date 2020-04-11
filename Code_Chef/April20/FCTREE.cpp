@@ -110,11 +110,11 @@ int main(){
         for(int i=0;i<q;i++){
             int x,y;
             cin>>x>>y;
-            queue<int> tmp;
+            vector<int> tmp;
             bool ans = 0;
             vector<bool> visited(n+1,0);
             if(x!=y)
-                bfs(visited, x, y, tmp, edges, ans, sequence);
+                dfs(visited, x, y, tmp, edges, ans, sequence);
             else
                 calculate({x},sequence);
         }
