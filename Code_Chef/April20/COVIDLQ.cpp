@@ -8,32 +8,25 @@ int main(){
     int t;
     cin>>t;
     while(t--){
+        int boundary = 6;
         int n;
         cin>>n;
-        int firstidx = -1, secondidx = -1;
-        bool following = true;
+        vector<int> arr(n);
+        string res = "YES";
+        for(int i=0;i<n;i++)
+            cin>>arr[i];
         for(int i=0;i<n;i++){
-            int tmp;
-            cin>>tmp;
-            if(tmp==1){
-                if(firstidx==-1)
-                    firstidx = i;
-                else if(secondidx==-1)
-                    secondidx = i;
-                else{
-                    firstidx = secondidx;
-                    secondidx = i;
-                }
+            int tmp = arr[i];
+            if(tmp==1 && boundary>=6)
+                boundary = 1;
+            else if(tmp==1 && boundary<6){
+                res = "NO";
+                break;
             }
-            if(firstidx!=-1 && secondidx!=-1)
-                following = (secondidx - firstidx >=6);
+            else if(tmp==0)
+                boundary += 1;
         }
-        if(!following)
-            cout<<"NO"<<endl;
-        else
-            cout<<"YES"<<endl;
-        
+        cout<<res<<endl;
     }
-    
     return 0;
 }
