@@ -1,3 +1,4 @@
+#include <iostream>
 #include <bits/stdc++.h>
 using namespace std;
 #pragma GCC optimize ("-O3")
@@ -5,27 +6,36 @@ using namespace std;
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(NULL); cout.tie(NULL);
-    int t;
+    long long int t;
     cin>>t;
-    while(t--){
-        int n;
-        long long int res = 0;
+    while (t--){
+        long long int n;
         cin>>n;
-        vector<long long int> arr(n);
-        vector<vector<pair<unsigned long long int,long long int>>> dp(n,vector<pair<unsigned long long int,long long int>>(n,make_pair(0,0)));
-        for(int i=0; i<n; i++){
+        long long int arr[n];
+        long long int buffer[n];
+        for(long long int i=0;i<n;i++){
             cin>>arr[i];
-            dp[i][i].first =  arr[i];
-            dp[i][i].second = ((abs(arr[i])%4 != 2)? 1 : 0);
-        }
-        for(int i=(n-2); i>=0; i--){
-            for(int j=(i+1);j<n;j++){
-                dp[i][j].first = dp[i+1][j].first * abs(arr[i]);
-                dp[i][j].second = dp[i+1][j].second + dp[i][j-1].second - dp[i+1][j-1].second + ((dp[i][j].first %4 != 2)?1:0);
+            if(arr[i] % 2 != 0)
+                buffer[i] = 0;
+            else{
+                if(arr[i] % 4 == 0)
+                    buffer[i] = 2;
+                else
+                    buffer[i] = 1;
             }
         }
-        cout<<dp[0][n-1].second<<"\n";
+        unordered_map<int,int> prev;
+        long long int count = 0;
+        long long int sum = 0;
+        for(long long int i=0;i<n;i++){
+            sum += buffer[i];
+            if(sum == 1)
+                count += 1;
+            if(prev.find(sum - 1) != prev.end())
+                count += prev[sum-1];
+            prev[sum]++;
+        }
+        long long int total = (n*(n+1))/2;
+        cout<<total-count<<endl; 
     }
-
-    return 0;
 }
