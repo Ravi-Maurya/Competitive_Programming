@@ -48,7 +48,8 @@ int isNotVisited(int x, vector<int>& path){
     return 1; 
 } 
 
-void bfs(vector<bool>& visited, int x, int y, queue<vector<int>>& q, vector<vector<int>>& edges, bool& ans, vector<int>& sequence){
+void bfs(int x, int y, vector<vector<int>>& edges, vector<int>& sequence){
+    queue<vector<int>> q;
     vector<int> res;
     res.push_back(x);
     q.push(res);
@@ -57,43 +58,21 @@ void bfs(vector<bool>& visited, int x, int y, queue<vector<int>>& q, vector<vect
         q.pop();
         int lastu = path[path.size()-1];
         if (lastu == y){
-            ans = 1;
             calculate(path,sequence);
-            break;
+            return;
         }
         for(auto v:edges[lastu]){
             if(isNotVisited(v,path)){
                 vector<int> nwpath(path);
                 nwpath.push_back(v);
+                if(v==y){
+                    calculate(nwpath,sequence);
+                    return;
+                }
                 q.push(nwpath);
             }
         }
     }
-    return;
-}
-
-void dfs(vector<bool>& visited, int x, int y, vector<int>& Stack, vector<vector<int>>& edges, bool& ans, vector<int>& sequence){
-    Stack.emplace_back(x);
-    if(x==y){
-        ans = 1;
-        calculate(Stack,sequence);
-        return;
-    }
-    visited[x] = 1;
-    bool flag = 0;
-    if(edges[x].size()>0){
-        for(auto j:edges[x]){
-            if(!visited[j]){
-                dfs(visited,j,y,Stack,edges,ans,sequence);
-                if(ans){
-                    flag = 1;
-                    break;
-                }
-            }
-        }
-    }
-    if(!flag)
-        Stack.pop_back();
     return;
 }
 
@@ -119,11 +98,8 @@ int main(){
         for(int i=0;i<q;i++){
             int x,y;
             cin>>x>>y;
-            queue<vector<int>> tmp;
-            bool ans = 0;
-            vector<bool> visited(n+1,0);
             if(x!=y)
-                bfs(visited, x, y, tmp, edges, ans, sequence);
+                bfs(x, y, edges, sequence);
             else
                 calculate({x},sequence);
         }

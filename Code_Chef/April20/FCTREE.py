@@ -5,10 +5,9 @@ def calculate(path,a):
     dic={}
     for i in range(len(path)):
         dic=primeFactors(a[path[i]-1],dic)
-    value=list(dic.values())
     ans=1
-    for i in range(len(value)):
-        ans*=(value[i]+1)
+    for _,i in dic:
+        ans*=(i+1)
         ans=ans%mod
     print(ans)
 
