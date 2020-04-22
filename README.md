@@ -1,2 +1,9 @@
 # Competitive_Programming
-Competitions like Codeforces, Codechef, Google KS, Google CJ
+- Google Code Jam
+- Google Kick Start
+- InterviewBit
+- LeetCode
+- GeeksForGeeks
+- CodeChef
+- Code Forces
+- AtCoder
