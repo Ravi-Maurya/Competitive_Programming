@@ -125,7 +125,7 @@ class BinaryTree{
     }
     
     Node* delete_key(Node* root, int key){
-        if(root)
+        if(!root)
             return NULL;
         if(!root->left && !root->right){
             if(root->val == key)
@@ -138,7 +138,7 @@ class BinaryTree{
         Node* node = NULL;
         Node* tmp;
         while(!q.empty()){
-            auto tmp = q.front();q.pop();
+            tmp = q.front();q.pop();
             if(tmp->val == key)
                 node = tmp;
             if(tmp->left)

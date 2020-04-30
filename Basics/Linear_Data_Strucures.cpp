@@ -5,7 +5,7 @@ using namespace std;
 class SortStack{
     public:
     void sortingInsert(stack<int>& s, int tmp){
-        if(s.empty() || x>s.top())
+        if(s.empty() || tmp>s.top())
             s.push(tmp), return;
         int tmp2 = s.top(); s.pop();
         sortingInsert(s,tmp);
