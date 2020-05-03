@@ -1,45 +1,40 @@
 class Solution {
 public:
-    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        
-        int i = 0;
-        int j = 0;
-        int count = 0;
-        int target = (nums1.size() + nums2.size());
-        int prev = 0;
-        
-        while(true) {
-            
-            int n = 0;
-            
-            int x = INT_MAX;
-            int y = INT_MAX;
-            
-            if(i < nums1.size()) x = nums1[i];
-            if(j < nums2.size()) y = nums2[j];
-            
-            if(x == INT_MAX && y == INT_MAX) break;
-            
-            if(x < y) {
-                n = x;
-                i++;
-            }
-            else {
-                n = y;
-                j++;
-            }
-            
-            if(count == target / 2) {
-                if(target % 2 != 0) {
-                    return n;
-                }
-                else {
-                    return (double)(prev + n) / 2;
-                }
-            }
-            prev = n;
-            count++;
+    double findMedianSortedArrays(vector<int>& A, vector<int>& B) {
+        int m = A.size(), n = B.size();
+        if(m>n){
+            swap(A,B);
+            swap(m,n);
         }
-        return 0;
+        int low = 0, high = m, k = (m+n+1)/2;
+        while(low<=high){
+            int i = (low+high)/2;
+            int j = k - i;
+            if(i<high && B[j-1]>A[i])
+                low = i+1;
+            else if(i>low && A[i-1]>B[j])
+                high = i-1;
+            else{
+                int max_left = 0;
+                if(i==0)
+                    max_left = B[j-1];
+                else if(j==0)
+                    max_left = A[i-1];
+                else
+                    max_left = max(A[i-1],B[j-1]);
+                
+                if((m+n)%2==1)
+                    return max_left;
+                int min_right = 0;
+                if(i==m)
+                    min_right = B[j];
+                else if(j==n)
+                    min_right = A[i];
+                else
+                    min_right = min(A[i],B[j]);
+                return (min_right+max_left)/2.0;
+            }
+        }
+        return 0.0;
     }
 };
