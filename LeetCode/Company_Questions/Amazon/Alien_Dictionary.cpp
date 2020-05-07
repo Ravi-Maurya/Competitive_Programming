@@ -13,7 +13,7 @@ class Graph{
     void add_edge(int u, int v){
         adjList[u].push_back(v);
     }
-    void helper(int ,v bool visited[], stack<int>& Stack){
+    void helper(int v, bool visited[], stack<int>& Stack){
         visited[v] = true;
         for(auto it = adjList[v].begin(); it!= adjList[v].end(); it++)
             if(!visited[*it])

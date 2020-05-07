@@ -27,9 +27,10 @@ public:
             }
         }
     }
-    string res = "";
-    for(int i=st; i<st+mx; i++)
-        res += s[i];
-    return res;
+    return s.substr(st,mx);
+    // string res = "";
+    // for(int i=st; i<st+mx; i++)
+    //     res += s[i];
+    // return res;
     }
 };
