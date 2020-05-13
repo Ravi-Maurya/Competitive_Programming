@@ -19,7 +19,7 @@ int mcm(vector<int>arr){
     int n = arr.size();
     vector<vector<int>> dp(n,vector<int>(n,0));
     for(int length = 2; length<=n; lenght++){
-        for(int i=0; i<n-length+1; i++){
+        for(int i=1; i<=n-length+1; i++){
             int j = i+length-1;
             dp[i][j] = INT_MAX;
             for(int k=i; k<j; k++){
