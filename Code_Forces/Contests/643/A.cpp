@@ -2,17 +2,17 @@
 using namespace std;
 #pragma GCC optimize ("-O3")
 
-pair<int,int> helper(unsigned long long int a){
-    int mn= INT_MAX, mx = INT_MIN;
+long long int helper(long long int a){
+    long long int mn= 10, mx = 0;
     while(a){
-        int tmp = a%10;
+        long long int tmp = a%10;
         a /= 10;
         if(tmp<mn)
             mn = tmp;
         if(tmp>mx)
             mx = tmp;
     }
-    return {mn,mx};
+    return mn*mx;
 }
 
 int main(){
@@ -21,12 +21,14 @@ int main(){
     int t;
     cin>>t;
     for(int test = 1; test<=t; test++){
-        unsigned long long int a, k;
+        long long int a, k;
         cin>>a>>k;
         k--;
         while(k--){
             auto curr = helper(a);
-            a += curr.first*curr.second;
+            if(curr==0)
+                break;
+            a += curr;
         }
         cout<<a<<"\n";
     }
