@@ -1,72 +1,48 @@
 class Solution {
 public:
-    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
-        if(board.empty()) return {};
-        
-        if(board[click[0]][click[1]] == 'M'){
-            board[click[0]][click[1]] = 'X';
-            return board;
-        }
-        
-        vector<int> adj = {0,1,-1};
-        stack<pair<int,int>> st;
-        map<pair<int,int>,bool> visited;
-        vector<pair<int,int>> neighbours;  
-        
-        st.push({click[0],click[1]});
-        
-        int rows = board.size(), cols = board[0].size();
-        
-        while(st.empty() == false){
+    int row, col;
+    int dx[8] = {-1,-1,0,1,1,1,0,-1};
+    int dy[8] = {0,1,1,1,0,-1,-1,-1};
+    
+    bool isok(int x, int y) { return x>=0 && x<row && y>=0 && y<col; }
+    
+    void reveal(vector<vector<char>>& board, int x, int y)
+    {
+        queue<pair<int,int>> q;
+        q.push({x,y});
+        while(!q.empty())
+        {
+            pair<int,int> p = q.front();
+            q.pop();
+            int px = p.first, py = p.second;
+            if(board[px][py]!='E') continue;
             
-            auto curr = st.top();
-            st.pop();
-            
-            auto x = curr.first, y = curr.second, mines = 0;
-            
-            if(visited[{x,y}])
-                continue;
-            
-            neighbours = {};
-          
-            for(int i = 0; i < adj.size();++i)
-                for(int j = 0;j < adj.size();++j){
-                    
-                    if((adj[i]==adj[j] and adj[j]==0) == false){
-                        int r = adj[i] + x, c = adj[j] + y;
-                        
-                        if(r >= 0 and r<rows and c>=0 and c<cols){
-                            
-                            auto curr_cell = board[r][c];
-                            
-                            if(curr_cell == 'M')
-                                mines++;
-                            else if(curr_cell == 'E' and visited[{x,y}] == false)
-                                neighbours.push_back({r,c});    
-                        }
-                        
-                    }
-                    
+            int mines = 0;
+            vector<pair<int,int>> tmp;
+            for(int i=0; i<8; i++)
+            {
+                if(isok(px+dx[i], py+dy[i]))
+                {
+                    if(board[px+dx[i]][py+dy[i]]=='M') mines++;
+                    else if(board[px+dx[i]][py+dy[i]]=='E') tmp.push_back({px+dx[i], py+dy[i]});
                 }
-            
-            
-            if(mines == 0){
-              board[x][y] = 'B';
-              
-              for(auto i : neighbours)
-                st.push(i);
-              
             }
-            else{
-                if(board[x][y] != 'M')
-                    board[x][y] = mines + '0';
+            if(!mines)
+            {
+                for(auto p:tmp) q.push(p);
+                board[px][py] = 'B';
             }
-                
-            
-            visited[{x,y}] = true;
-            
+            else board[px][py] = char(mines+48);
         }
-        
+    }
+    
+    
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) 
+    {
+        row = board.size(), col = board[0].size();
+        int x = click[0], y = click[1];
+        if(board[x][y]=='M') board[x][y]='X';
+        else reveal(board, x, y);
         return board;
     }
 };
