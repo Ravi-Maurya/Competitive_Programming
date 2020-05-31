@@ -50,7 +50,6 @@ public:
         tree[idx] = tree[2*idx] + tree[2*idx+1];
         return;
     }
-
 };
 
 
