@@ -2,7 +2,7 @@
 using namespace std;
 #pragma GCC optimize ("-O3")
 
-#define ll unsigned long long int
+#define ll long long int
 #define pll pair<ll,ll> 
 #define pls pair<ll,string>
 #define psl pair<string,ll>
@@ -20,10 +20,6 @@ using namespace std;
 #define tou(s) transform(s.begin(),s.end(),s.begin(),::toupper);
 #define rep(n) for(auto i=0; i<n; i++)
 
-bool compare(pll& a, pll& b){
-    return a.first<=b.first;
-}
-
 ll min(ll& a, ll& b){
     if(a<b)
         return a;
@@ -39,25 +35,15 @@ int main(){
     ll comp = n*avg;
     vector<pll> arr(n);
     rep(n){
-        ll marks,essay;
-        cin>>marks>>essay;
-        sum += marks;
-        arr[i] = {essay,r-marks};
+        cin>> arr[i].second >> arr[i].first;
+        sum += arr[i].second;
     }
-    if(comp-sum<=0){
-        cout<<0<<"\n";
-        return 0;
-    }
-    sort(arr.begin(),arr.end(),compare);
-    ll diff = comp-sum;
+    sort(arr.begin(),arr.end());
     ll essays = 0;
-    for(ll i= 0; i<n; i++){
-        if(diff<=0){
-            break;
-        }
-        ll curr = min(diff,arr[i].second);
+    for(ll i= 0; (i<n) && (sum<comp); i++){
+        ll curr = min(comp - sum, r - arr[i].second);
         essays += (arr[i].first * curr);
-        diff -= curr;
+        sum += curr;
     }
     cout<< essays<<"\n";
     return 0;
