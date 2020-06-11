@@ -4,7 +4,7 @@ using namespace std;
 struct DSU{
     int *parent;
     int n;
-    DisjointSets(int n){
+    DSU(int n){
         this->n = n;
         parent = new int[n+1];
         for(int i = 0; i<=n; i++){
