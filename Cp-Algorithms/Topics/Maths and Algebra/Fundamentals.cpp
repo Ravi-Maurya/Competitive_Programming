@@ -100,6 +100,33 @@ int inverse_gray_code(int g){
     return n;
 }
 
+void BinomialCoff(int n, int r){
+    ll C[n+1][r+1];
+    C[0][0] = 1;
+    for(int i=1; i<=n; i++){
+        C[i][0] = C[i][i] = 1;
+        for(int j=1;j<i;j++)
+            C[i][j] = C[i-1][j-1] + C[i-1][j];
+    }
+}
+
+void BinomialCoffmod(int n,  int r){// arbitrary Implentation
+    int m;
+    return (factorial(n,m) * modInverse(factorial(r,m),m)* modInverse(factorial(n-r,m),m))%m;
+}
+
+ll nthCatalan(int n){
+    vector<ll> dp(n+1,0);
+    dp[0] = 1;
+    dp[1] = 1;
+    for(int i=2;i<=n;i++){
+        for(int j=0;j<i;j++){
+            dp[i] = (dp[i] + (dp[j]*dp[i-1-j]));
+        }
+    }
+    return dp[n];
+}
+
 int main(){
     ios_base::sync_with_stdio(0);
     cin.tie(NULL); cout.tie(NULL);
