@@ -1,4 +1,5 @@
-class Solution {
+//O(n2) - Time
+class Solution {//O(n2) - space
 public:
     string longestPalindrome(string s) {
         int n = s.size();
@@ -25,5 +26,37 @@ public:
             }
         }
         return s.substr(idx,res);
+    }
+};
+
+class Solution {//O(1) space;
+public:
+    
+    int expand(string s, int left, int right){
+        int l = left, r = right;
+        while(l>=0 && r<s.size() && s[l]==s[r]){
+            l--;r++;
+        }
+        return r-l-1;
+    }
+    
+    string longestPalindrome(string s) {
+        int n = s.size();
+        if(n<2)
+            return s;
+        int st = 0,en =0;
+        for(int i=0; i<n; i++){
+            int l1 = expand(s,i,i);
+            int l2 = expand(s,i,i+1);
+            int l = max(l1,l2);
+            cout<< l << " ";
+            if(l> en-st+1){
+                // cout<< st << " "<<en<<"\n";
+                st = i - (l-1)/2;
+                en = i + l/2;
+            }
+        }
+        // cout<< st << " "<<en<<"\n";
+        return s.substr(st,en - st+1);
     }
 };

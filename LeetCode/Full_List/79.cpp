@@ -1,4 +1,4 @@
-class Solution {
+class Solution {//O(n*4^l)
 public:
     bool dfs(vector<vector<char>>& board, int i, int j, string& word, int idx){
         if(idx==word.size())

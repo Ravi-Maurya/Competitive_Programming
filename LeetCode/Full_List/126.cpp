@@ -1,63 +1,70 @@
-bool bfs(const string& start,const string& end,const vector<string>& tmp,unordered_map<string, vector<string>>& children){
-    unordered_set<string> mapp(tmp.begin(), tmp.end()), current, next;
-    current.insert(start);
-    while (true){
-        for (string word : current)
-            mapp.erase(word);
-        for (string word : current){
-            string parent = word;
-            for (int i = 0; i < word.size(); i++){
-                char t = word[i];
-                for (int j = 0; j < 26; j++){
-                    word[i] = 'a' + j;
-                    if (mapp.find(word) != mapp.end()){
-                        next.insert(word);
-                        children[parent].push_back(word);
-                    }
-                }
-                word[i] = t;
-            }
-        }
-        if (next.empty())
-            return false;
-        if (next.find(end) != next.end())
-            return true;
-        current.clear();
-        swap(current, next);
-    }
-    return false;
-}
-
-
-void dfs(const string& start, const string& end, vector<string>& tmp, vector<vector<string>>& dict, unordered_map<string, vector<string>>& children) {
-    if (start == end)
-        dict.push_back(tmp);
-    else{
-        for(string word : children[start]){
-            tmp.push_back(word);
-            dfs(word, end, tmp, dict, children);
-            tmp.pop_back();
-        }
-    }
-}
-
 class Solution {
+    
+    vector<vector<string>> res;
+    vector<string> path;
+    unordered_map<string,vector<string>> graph;
+    
 public:
-    vector<vector<string>> findLadders(string start, string end, vector<string>& dict) {
-        vector<vector<string>> res;
-        unordered_set<string> mapp(dict.begin(), dict.end());
-        if(mapp.find(end)==mapp.end())
-            return {};
-        if(start==end){
-            res.push_back({start});
+    
+    bool bfs(const string& beginWord,const string& endWord, unordered_set<string>& wordList){ // create a graph with bfs 
+    // like this
+    // hit -> hot -> (dot,lot) -> (dog,log) -> (cog,cog)
+    // i.e. all the shortest path from hit to cog
+        unordered_set<string> current, next;
+        current.insert(beginWord);
+        while(true){
+            for(auto word: current)
+                wordList.erase(word);
+            for(auto parent: current){
+                string word = parent;
+                for(int i=0; i<word.size(); i++){
+                    char ch = word[i];
+                    for(char c='a'; c<='z'; c++){
+                        word[i] = c;
+                        if(wordList.count(word)){
+                            next.insert(word);
+                            graph[parent].push_back(word);
+                        }
+                    }
+                    word[i] = ch;
+                }
+            }
+            if(next.empty())
+                return false;
+            if(next.count(endWord))
+                return true;
+            current.clear();
+            swap(current,next);
+        }
+        return false;
+    }
+    
+    void dfs(string beginWord, string endWord){
+        // traverse the graph created dfs wise;
+        if(beginWord == endWord){
+            res.push_back(path);
+            return;
+        }
+        for(auto child: graph[beginWord]){
+            path.push_back(child);
+            dfs(child,endWord);
+            path.pop_back();
+        }
+    }
+    
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_set<string> ust(wordList.begin(), wordList.end());
+        if(!ust.count(endWord))
+            return res;
+        if(beginWord == endWord){
+            res.push_back({beginWord});
             return res;
         }
-        unordered_map<string, vector<string>> children;
-        if (!bfs(start, end, dict, children))
-            return {};
-        vector<string> tmp;
-        tmp.push_back(start);
-        dfs(start, end, tmp, res, children);
+        if(!bfs(beginWord,endWord,ust))
+            return res;
+        path.push_back(beginWord);
+        dfs(beginWord,endWord);
         return res;
     }
+
 };

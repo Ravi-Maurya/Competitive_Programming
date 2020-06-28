@@ -27,3 +27,31 @@ public:
         return res;
     }
 };
+
+
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {//o(n2)
+        vector<vector<int>> res;
+        set<pair<int,int>> ust;
+        unordered_set<int> dup;
+        unordered_map<int,int> visited;
+        int n = nums.size();
+        for(int i=0; i<n; i++){
+            if(dup.insert(nums[i]).second){
+                for(int j=i+1; j<n; j++){
+                    int comp = -nums[i]-nums[j];
+                    auto it = visited.find(comp);
+                    if(it != visited.end() && it->second == i){
+                        int v1 = min({nums[i],nums[j],comp});
+                        int v2 = max({nums[i],nums[j],comp});
+                        if(ust.insert({v1,v2}).second)
+                            res.push_back({nums[i],comp,nums[j]});
+                    }
+                    visited[nums[j]] = i;
+                }
+            }
+        }
+        return res;
+    }
+};
