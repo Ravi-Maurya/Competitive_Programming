@@ -1,21 +1,21 @@
 class Solution {
 public:
     vector<int> partitionLabels(string S) {
-        unordered_map<char,int> ump;
-        int n = S.size();
-        for(int i = 0; i<n; i++){
-            ump[S[i]] = i;
+        vector<int> last_idx(26, 0);
+        for(int i = 0; i < S.size(); i++){
+            last_idx[S[i]-'a'] = i;
         }
-        vector<int> res;
-        int left = -1;
-        int right = -1;
-        for(int i=0;i<n; i++){
-            right = max(right,ump[S[i]]);
-            if(right==i){
-                res.push_back(right-left);
-                left = i;
+        
+        vector<int> results;
+        
+        int right = -1, left = 0;
+        for(int i = 0; i < S.size(); i++){
+            right = max(right, last_idx[S[i]-'a']);
+            if(i == right) {
+                results.push_back(right - left + 1);
+                left = i+1;
             }
         }
-        return res;
+        return results;
     }
 };

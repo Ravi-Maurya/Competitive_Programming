@@ -1,25 +1,29 @@
-typedef pair<string, int> PAIR;
 
 class Solution {
 public:
+    struct cmp {
+        bool operator()(const pair<int,string> &a, const pair<int,string> &b) {
+            return (a.first == b.first) ? (a.second < b.second) : (a.first > b.first);
+        };
+    };
+    
     vector<string> topKFrequent(vector<string>& words, int k) {
         unordered_map<string, int> dict;
         for(string s : words) {
             dict[s]++;
         }
-        struct cmp {
-            bool operator()(const PAIR &a, const PAIR &b) {
-                return (a.second == b.second) ? 
-                    (a.first > b.first) : 
-                    (a.second < b.second);
-            };
-        };
-        priority_queue<PAIR, vector<PAIR>, cmp> pq(dict.begin(), dict.end());
-        vector<string> res;
-        while (!pq.empty() && res.size() < k) {
-            PAIR top = pq.top();
-            res.push_back(top.first);
-            pq.pop();
+        priority_queue<pair<int,string>, vector<pair<int,string>>, cmp> minheap;
+        for(auto& [s,val]: dict){
+            minheap.push({val,s});
+            if(minheap.size()>k)
+                minheap.pop();
+        }
+        
+        vector<string> res(k);
+        while(!minheap.empty()){
+            k--;
+            res[k] = minheap.top().second;
+            minheap.pop();
         }
         return res;
     }

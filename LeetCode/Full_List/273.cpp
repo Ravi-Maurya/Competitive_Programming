@@ -1,48 +1,60 @@
 class Solution {
 public:
-    vector<pair<int,string>> tens {
-        {90, "Ninety"},{80, "Eighty"},{70, "Seventy"},{60, "Sixty"},{50, "Fifty"},{40, "Forty"},
-        {30, "Thirty"},{20, "Twenty"},{10, "-"},
-    };
-
-    vector<pair<int,string>> underTwenty {
-        {19, "Nineteen"},{18, "Eighteen"},{17, "Seventeen"},{16, "Sixteen"},{15, "Fifteen"},
-        {14, "Fourteen"},{13, "Thirteen"},{12, "Twelve"},{11, "Eleven"},{10, "Ten"},{ 9, "Nine"},
-        { 8, "Eight"},{ 7, "Seven"},{ 6, "Six"},{ 5, "Five"},{ 4, "Four"},{ 3, "Three"},{ 2, "Two"},
-        { 1, "One"},
-    };
-
+    unordered_map<int,string> tens,twentys;
+    
+    Solution(){
+        twentys[0] = "";
+        twentys[1] = "One"; twentys[2] = "Two";
+        twentys[3] = "Three"; twentys[4] = "Four";
+        twentys[5] = "Five"; twentys[6] = "Six";
+        twentys[7] = "Seven"; twentys[8] = "Eight";
+        twentys[9] = "Nine"; twentys[10] = "Ten";
+        twentys[11] = "Eleven"; twentys[12] = "Twelve"; twentys[13] = "Thirteen";
+        twentys[14] = "Fourteen"; twentys[15] = "Fifteen"; twentys[16] = "Sixteen";
+        twentys[17] = "Seventeen"; twentys[18] = "Eighteen"; twentys[19] = "Nineteen";
+        
+        tens[2] = "Twenty";tens[3] = "Thirty";tens[4] = "Forty";tens[5] = "Fifty";
+        tens[6] = "Sixty";tens[7] = "Seventy";tens[8] = "Eighty";tens[9] = "Ninety";
+    }
+    
+    
     string numberToWords(int num) {
-        string num_str = "";
-        if (num == 0)
+        if(num==0)
             return "Zero";
-        if ( num >= 1000000000 ) {
-            num_str += numberToWords(num/1000000000) + " Billion";
-            num = num % 1000000000;
-            num_str += (num?" ":""); 
+        string res = "";
+        if(num>=1000000000){
+            res += numberToWords(num/1000000000) + " Billion";
+            num = num%1000000000;
+            if(num)
+                res += " ";
         }
-        if ( num >= 1000000 ) {
-            num_str += numberToWords(num/1000000) + " Million";
-            num = num % 1000000;
-            num_str += (num?" ":""); 
+        if(num>=1000000){
+            res += numberToWords(num/1000000) + " Million";
+            num = num%1000000;
+            if(num)
+                res += " ";
         }
-        if ( num >= 1000 ) {
-            num_str += numberToWords(num/1000) + " Thousand";
-            num = num % 1000;
-            num_str += (num?" ":""); 
+        if(num>=1000){
+            res += numberToWords(num/1000) + " Thousand";
+            num = num%1000;
+            if(num)
+                res += " ";
         }
-        if ( num >= 100 ) {
-            num_str += numberToWords(num/100) + " Hundred";
-            num = num % 100;
-            num_str += (num?" ":""); 
+        if(num>=100){
+            res += numberToWords(num/100) + " Hundred";
+            num = num%100;
+            if(num)
+                res += " ";
         }
-        if (  num / 10 > 1) {
-            num_str += tens[tens.size() - num/10].second;
-            num = num % 10;
-            num_str += (num?" ":""); 
+        if(num>=20){
+            res += tens[num/10];
+            num = num%10;
+            if(num)
+                res += " ";
         }
-        if ( num > 0 )
-            num_str += underTwenty[underTwenty.size() - num].second;
-        return num_str;
+        if(num>0)
+            res += twentys[num];
+        return res;
+        
     }
 };

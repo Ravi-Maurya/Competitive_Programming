@@ -7,7 +7,7 @@ struct Cache{
     }
 };
 class LRUCache {
-    list<Cache> cache;
+    list<Cache> cache;// erase takes O(number of elements erased)
     unordered_map<int, list<Cache>::iterator> ump;
     int cap;
 public:
