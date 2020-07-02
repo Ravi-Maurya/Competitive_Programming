@@ -46,8 +46,8 @@ public:
             return s;
         int st = 0,en =0;
         for(int i=0; i<n; i++){
-            int l1 = expand(s,i,i);
-            int l2 = expand(s,i,i+1);
+            int l1 = expand(s,i,i);//ODD
+            int l2 = expand(s,i,i+1);//Even
             int l = max(l1,l2);
             cout<< l << " ";
             if(l> en-st+1){
