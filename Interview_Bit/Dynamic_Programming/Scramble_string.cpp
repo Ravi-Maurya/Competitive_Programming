@@ -1,32 +1,20 @@
-map<pair<string, string>, bool> mapp;
-int rec(const string &A, const string &B) {
-    pair<string, string> p = make_pair(A, B);
-    if (mapp.find(p) != mapp.end()) 
-        return mapp[p];
-    string temp1 = A;
-    string temp2 = B;
-    sort(temp1.begin(), temp1.end());
-    sort(temp2.begin(), temp2.end());
-    if(temp1.compare(temp2) != 0)
-        return false;
-    if(temp1.size() <= 2)
-        return true;
-    for(int i = 1; i < A.length(); i++) {
-        if(rec(A.substr(0, i), B.substr(0, i)) && rec(A.substr(i), B.substr(i))){
-            mapp[p] = true;
+int Solution::isScramble(const string s1, const string s2) {
+        if(s1==s2)
             return true;
+        vector<int> alpha(26,0);
+        int n = s1.size();
+        for(int i=0; i<n; i++){
+            alpha[s1[i]-'a']++;
+            alpha[s2[i]-'a']--;
         }
-        if(rec(A.substr(0, i), B.substr(B.length() - i)) && rec(A.substr(i), B.substr(0, B.length() - i))){
-            mapp[p] = true;
-            return true;
+        for(int i=0;i<26;i++)
+            if(alpha[i]!=0)
+                return false;
+        for(int i=1;i<n;i++){
+            if(isScramble(s1.substr(0,i) , s2.substr(0,i)) && isScramble(s1.substr(i) , s2.substr(i)))
+                return true;
+            if(isScramble(s1.substr(0,i) , s2.substr(n-i)) && isScramble(s1.substr(i) , s2.substr(0,n-i)))
+                return true;
         }
-    }
-    mapp[p] = false;
-    return false;
-}
-int Solution::isScramble(const string A, const string B) {
-    if(A.size()!=B.size())
         return false;
-    mapp.clear();
-    return rec(A,B);
 }
