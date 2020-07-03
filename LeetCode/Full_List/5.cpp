@@ -1,24 +1,59 @@
+class Solution {//O(n3)// BruteForce
+public:
+    
+    bool ispal(string& s, int i, int j){
+        while(i<=j){
+            if(s[i]!=s[j])
+                return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+    
+    string longestPalindrome(string s) {
+        int n = s.size();
+        int idx = -1, res = 0;
+        for(int j=0; j<n; j++){
+            for(int i=0; i<=j; i++){
+                if(ispal(s,i,j) && j-i+1>res){
+                    res = j-i+1;
+                    idx = i;
+                }
+                
+            }
+        }
+        if(idx==-1)
+            return "";
+        return s.substr(idx,res);
+    }
+};
+
+
 //O(n2) - Time
-class Solution {//O(n2) - space
+class Solution {
 public:
     string longestPalindrome(string s) {
         int n = s.size();
-        vector<vector<bool>> dp(n,vector<bool>(n,0));
-        int idx = 0;
-        int res = 0;
-        for(int length=1; length<=n; length++){
-            for(int i = 0; i<n-length+1; i++){
+        if(n<=1)
+            return s;
+        bool dp[n+1][n+1];
+        memset(dp,false,sizeof(dp));
+        for(int i=0; i<n; i++){
+            dp[i][i] = true;
+        }
+        int idx = 0, res = 1;
+        for(int i=0; i<n-1; i++){
+            dp[i][i+1] = (s[i] == s[i+1]);
+            if(dp[i][i+1] && 2>res){
+                res = 2;
+                idx = i;
+            }
+        }
+        for(int length=3; length<=n; length++){
+            for(int i=0; i<n-length+1; i++){
                 int j = i+length-1;
-                if(length==1){
-                    dp[i][j] = 1;
-                }
-                else if(length == 2){
-                    dp[i][j] = (s[i]==s[j]);
-                }
-                else{
-                    dp[i][j] = dp[i+1][j-1] && (s[i]==s[j]);
-                }
-                
+                dp[i][j] = dp[i+1][j-1] && (s[i]==s[j]);
                 if(dp[i][j] && length>res){
                     res = length;
                     idx = i;
