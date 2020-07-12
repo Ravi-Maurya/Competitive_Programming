@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+#pragma GCC optimize ("-O3")
+
+#define ll long long int
+#define pll pair<ll,ll> 
+#define pls pair<ll,string>
+#define psl pair<string,ll>
+#define plc pair<ll,char>
+#define pcl pair<char,ll>
+#define pss pair<string,string>
+#define maxheap(type) priority_queue<type>
+#define minheap(type) priority_queue<type,vector<type>,greater<type>>
+#define setbits(x) __builtin_popcountll(x)
+#define zerobits(x) __builtin_ctzll(x)
+#define mod 1000000007
+#define inf 1e18
+#define precise(x,y) fixed<<setprecision(y)<<x
+#define tol(s) transform(s.begin(),s.end(),s.begin(),::tolower);
+#define tou(s) transform(s.begin(),s.end(),s.begin(),::toupper);
+#define rep(n) for(auto i=0; i<n; i++)
+
+int solve(){
+    ll n;
+    cin>>n;
+    vector<ll> arr(n),right(n),left(n);
+    rep(n)
+        cin>>arr[i];
+    left[0] = arr[0];
+    for(int i=1; i<n; i++){
+        left[i] = max(left[i-1],arr[i-1]);
+    }
+    if(n==0)
+        return 0;
+    if(n==1)
+        return 1;
+    int count = 0;
+    for(int i=0; i<n; i++){
+        if(i==0){
+            if(arr[i+1]<arr[i])
+                count++;
+        }
+        else if(i==n-1){
+            if(left[i]<arr[i])
+                count++;
+        }
+        else{
+            if(arr[i+1]<arr[i] && left[i]<arr[i])
+                count++;
+        }
+    }
+    return count;
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL); cout.tie(NULL);
+    int test;
+    cin>>test;
+    for(int t = 1; t<= test; t++){
+        cout<< "Case #"<<t<<": ";
+        cout<< solve();
+        cout<<"\n";
+    }
+    return 0;
+}
