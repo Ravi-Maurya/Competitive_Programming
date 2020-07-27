@@ -11,25 +11,32 @@
  */
 class Solution {
 public:
-    TreeNode* build(vector<int>& preorder, vector<int>& inorder, int prel, int preh, int inl,unordered_map<int,int>& ump){
-        if(prel>preh)
-            return NULL;
-        int idx = ump[preorder[prel]];
-        TreeNode* root = new TreeNode(preorder[prel]);
-        root->left = build(preorder, inorder, prel+1, prel+(idx-inl), inl,ump);
-        root->right = build(preorder, inorder, prel+(idx-inl)+1, preh, idx+1,ump);
-        return root;
-    }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        if(preorder.size()!=inorder.size())
+        if(inorder.size()==0)
             return NULL;
-        unordered_map<int,int> ump;
-        for(int i = 0; i<inorder.size(); i++)
-            ump[inorder[i]] = i;
-        for(auto& x: preorder)
-            if(!ump.count(x))
-                return NULL;
-        int n = inorder.size();
-        return build(preorder,inorder,0,n-1,0,ump);
+        TreeNode* curr;
+        TreeNode* root;
+        stack<TreeNode*> res;
+        int i=0,j=0;
+        root = new TreeNode(preorder[i++]);
+        res.push(root);
+        while(true){
+            if(inorder[j] == res.top()->val){
+                curr = res.top();res.pop();
+                j++;
+                if(j==inorder.size())
+                    break;
+                if(!res.empty() && inorder[j] == res.top()->val)
+                    continue;
+                curr->right = new TreeNode(preorder[i++]);
+                res.push(curr->right);
+            }
+            else{
+                curr = new TreeNode(preorder[i++]);
+                res.top()->left = curr;
+                res.push(curr);
+            }
+        }
+        return root;
     }
 };

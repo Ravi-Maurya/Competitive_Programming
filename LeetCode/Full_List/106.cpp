@@ -11,45 +11,34 @@
  */
 class Solution {
 public:
-    TreeNode* buildTree(vector<int>& inorder, vector<int>& preorder) {
-        if(preorder.size() == 0) {
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if(inorder.size()==0)
             return NULL;
-        }
-        
-        unordered_map<int, int> inorderIndex;
-        stack<pair<int, TreeNode*>> visitedIndex;
-        
-        for(int i=0; i<inorder.size(); i++){
-            inorderIndex[inorder[i]] = i;
-        }
-        
-        TreeNode* root = new TreeNode(preorder[preorder.size()-1]);
-        visitedIndex.push({inorderIndex[preorder[preorder.size()-1]], root});
-        
-        for(int i=preorder.size()-2; i>=0; i--){
-            int elementInorderPos = inorderIndex[preorder[i]];
-            pair<int, TreeNode*> prevNodePair;
-            pair<int, TreeNode*> p_prevNodePair;
-            
-            bool looped = false;
-            while(!visitedIndex.empty()){
-                prevNodePair = visitedIndex.top();
-                int prevNodeLimit = prevNodePair.first;
-                if(prevNodeLimit <= elementInorderPos){
+        TreeNode* curr;
+        TreeNode* root;
+        stack<TreeNode*> res;
+        root = new TreeNode(postorder.back());
+        res.push(root);
+        postorder.pop_back();
+        while(true){
+            if(inorder.back() == res.top()->val){
+                curr = res.top();
+                res.pop();
+                inorder.pop_back();
+                if(inorder.size()==0)
                     break;
-                }
-                visitedIndex.pop();
-                p_prevNodePair = prevNodePair;
-                looped = true;
+                if(!res.empty() && inorder.back() == res.top()->val)
+                    continue;
+                curr->left = new TreeNode(postorder.back());
+                postorder.pop_back();
+                res.push(curr->left);
             }
-            
-            TreeNode* newNode = new TreeNode(preorder[i]);
-            if(!looped){
-                prevNodePair.second->right = newNode;
-            } else {
-                p_prevNodePair.second->left = newNode;
-            } 
-            visitedIndex.push({elementInorderPos, newNode});
+            else{
+                curr = new TreeNode(postorder.back());
+                postorder.pop_back();
+                res.top()->right = curr;
+                res.push(curr);
+            }
         }
         return root;
     }
