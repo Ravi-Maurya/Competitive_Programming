@@ -20,7 +20,7 @@ public:
         double res;
         while(l<=h){
             int mid1 = (l+h)/2;
-            int mid2 = (m+n+1)/2 - mid1;
+            int mid2 = mid - mid1;
             max1 = (mid1==0)?INT_MIN:nums1[mid1-1];
             min1 = (mid1==m)?INT_MAX:nums1[mid1];
             
