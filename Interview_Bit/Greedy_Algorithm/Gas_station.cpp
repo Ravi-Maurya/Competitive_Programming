@@ -1,7 +1,5 @@
 int Solution::canCompleteCircuit(const vector<int> &A, const vector<int> &B) {
     int n = A.size();
-    if(n==1)
-        return 0;
     for(int i=0;i<n;i++){
         int amount = A[i];
         if(amount<B[i])

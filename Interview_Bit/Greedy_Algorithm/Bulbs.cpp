@@ -11,3 +11,16 @@ int Solution::bulbs(vector<int> &A) {
         return res;
     return res+1;
 }
+
+
+int Solution::bulbs(vector<int> &A) {
+    int mult = 1;
+    int count = 0;
+    for(int i = 0; i<A.size(); i++){
+        if((A[i]==0 && mult==1) || (A[i]==1 && mult==-1)){
+            mult *= -1;
+            count++;
+        }
+    }
+    return count;
+}
