@@ -69,7 +69,9 @@
         "thread": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
